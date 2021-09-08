@@ -46,7 +46,7 @@ function App() {
 
   return (
     <div className="app">
-      <h3>Create New Todo</h3>
+      <h3 style={{textAlign:"center"}}>Create New Todo</h3>
       <form onSubmit={e => {
         e.preventDefault();
          createTodo({ variables: { text: input.value } });
@@ -58,13 +58,13 @@ function App() {
       </form>
       <ul>
        {data.todos.map((todo) =>
-          <li key={todo.id} className="w-100">
+          <li key={todo.id} style={{ width:"400px" ,padding:"5px"}}>
             <span className={todo.completed ? "done" : "pending"}>{todo.text}</span>
-            <button className="btn btn-sm btn-danger rounded-circle float-right" onClick={() => {
+            <button className=" ml-3 btn btn-s btn-outline-danger float-right" onClick={() => {
                deleteTodo({ variables: { id: todo.id} });
               window.location.reload();
-            }}>X</button>
-            <button className={`btn btn-sm float-right ${todo.completed ? "btn-success" : "btn-info"}`} onClick={() => {
+            }}>❌</button>
+            <button className={`btn btn-s float-right ${todo.completed ? "btn-success" : "btn-info"}`} onClick={() => {
               updateTodo({ variables: { id: todo.id} });
               window.location.reload();
             }}>{todo.completed ? <span>Completed</span> : <span>Not completed</span>}</button>
