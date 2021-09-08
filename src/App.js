@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from "graphql-tag";
@@ -16,8 +16,15 @@ const READ_TODOS = gql`
 
 const CREATE_TODO = gql`
   mutation CreateTodo($text: String!) {
-    createTodo(text: $text)
+    createTodo(text: $text){
+      id
+      text
+      completed
+
+    }
+
   }
+
 `;
 
 const REMOVE_TODO = gql`
@@ -34,30 +41,59 @@ const UPDATE_TODO = gql`
 
 function App() {
   let input;
-  //  let [data, setData] = useState({todo :[] })
+
    const { data, loading, error } = useQuery(READ_TODOS);
    const [createTodo] = useMutation(CREATE_TODO );
    const [deleteTodo] = useMutation(REMOVE_TODO );
   const [updateTodo] = useMutation(UPDATE_TODO);
 
+  let [todos, setTodos] = useState([])
+    console.log(loading , todos  , data)
+
+    useEffect(()=>{
+      if(!loading){
+        setTodos(data.todos)
+
+      }
+
+
+    },[loading])
+
+
+
+
   if (loading) return <p>loading...</p>;
    if (error) return <p>ERROR</p>;
    if (!data) return <p>Not found</p>;
+  //
+
+
+
+
+
 
   return (
     <div className="app">
       <h3 style={{textAlign:"center"}}>Create New Todo</h3>
-      <form onSubmit={e => {
+      <form onSubmit={ async(e) => {
         e.preventDefault();
-         createTodo({ variables: { text: input.value } });
-        input.value = '';
-        window.location.reload();
+         const result= await createTodo({ variables: { text: input.value } });
+
+         setTodos([...todos,result.data.createTodo])
+          console.log(" Result createTodo : "  ,result ,data.todos.length);
+          // const response= await result;
+
+
+        //  console.log(" Result after await  createTodo : "  , response);
+      //  input.value = '';
+
+        // window.location.reload();
       }}>
         <input className="form-control" type="text" placeholder="Enter todo" ref={node => { input = node; }}></input>
         <button className="btn btn-primary px-5 my-2" type="submit">Submit</button>
       </form>
       <ul>
-       {data.todos.map((todo) =>
+       {todos.map((todo) =>
           <li key={todo.id} style={{ width:"400px" ,padding:"5px"}}>
             <span className={todo.completed ? "done" : "pending"}>{todo.text}</span>
             <button className=" ml-3 btn btn-s btn-outline-danger float-right" onClick={() => {
