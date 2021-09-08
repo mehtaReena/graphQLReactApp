@@ -126,7 +126,7 @@ setTodos(res.data.updateTodo)
       </form>
       <ul>
 
-       {  deleting ?  <h1> "Procesing" </h1>:
+       {  deleting ?  <h6 style={{color:'#17A2B8'}}> Procesing... </h6>:
 
        todos.map((todo) =>
           <li key={todo.id} style={{ width:"400px" ,padding:"5px"}}>
