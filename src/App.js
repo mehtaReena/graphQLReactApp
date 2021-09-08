@@ -51,12 +51,13 @@ function App() {
     console.log(loading , todos  , data)
 
     useEffect(()=>{
-      if(!loading){
+            if(!loading){
+        // eslint-disable-next-line
         setTodos(data.todos)
 
       }
 
-
+// eslint-disable-next-line
     },[loading])
 
 
