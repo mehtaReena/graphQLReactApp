@@ -58,7 +58,7 @@ function App() {
       }
 
 // eslint-disable-next-line
-    },[loading ,data.todos])
+    },[loading])
 
 
 
