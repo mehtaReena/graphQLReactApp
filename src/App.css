@@ -1,9 +1,15 @@
 .app {
   padding: 50px;
+  display:flex;
+  flex-direction:column;
+  justify-items:center;
+  align-items:center;
+
 }
 
 form {
   width: 50%;
+
 }
 
 ul {
@@ -14,6 +20,8 @@ ul {
 
 li {
   margin-top: 15px;
+  margin-left:200px;
+  list-style:none;
 }
 
 li span.done {
