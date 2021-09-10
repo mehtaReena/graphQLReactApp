@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from "graphql-tag";
@@ -40,8 +40,7 @@ const UPDATE_TODO = gql`
 `;
 
 function App() {
-  let input;
-
+  let inputRef = useRef();
    const { data, loading, error } = useQuery(READ_TODOS);
    const [createTodo] = useMutation(CREATE_TODO );
    const [deleteTodo] = useMutation(REMOVE_TODO );
@@ -108,8 +107,8 @@ setTodos(newList)
       <h3 style={{textAlign:"center"}}>Create New Todo</h3>
       <form onSubmit={ async(e) => {
         e.preventDefault();
-         const result= await createTodo({ variables: { text: input.value } });
-         input.value = '';
+         const result= await createTodo({ variables: { text: inputRef.current.value } });
+         inputRef.current.value = '';
          setTodos([...todos,result.data.createTodo])
           // console.log(" Result createTodo : "  ,result ,data.todos.length);
           // const response= await result;
@@ -118,7 +117,7 @@ setTodos(newList)
         //  console.log(" Result after await  createTodo : "  , response);
                // window.location.reload();
       }}>
-        <input className="form-control" type="text" placeholder="Enter todo" ref={node => { input = node; }}></input>
+        <input className="form-control" type="text" placeholder="Enter todo" ref={inputRef}></input>
         <button className="btn btn-primary px-5 my-2" type="submit">Submit</button>
       </form>
       <ul>
