@@ -116,7 +116,7 @@ setTodos(newList)
 
 
         //  console.log(" Result after await  createTodo : "  , response);
-      //  input.value = '';
+         input.value = '';
 
         // window.location.reload();
       }}>
