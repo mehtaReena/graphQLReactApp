@@ -45,6 +45,7 @@ function App() {
    const [createTodo] = useMutation(CREATE_TODO );
    const [deleteTodo] = useMutation(REMOVE_TODO );
   const [updateTodo] = useMutation(UPDATE_TODO);
+    let[message , setMessage]=useState("")
 
   const [deleting , setDeleting] = useState(false)
 
@@ -107,7 +108,10 @@ setTodos(newList)
       <h3 style={{textAlign:"center"}}>Create New Todo</h3>
       <form onSubmit={ async(e) => {
         e.preventDefault();
-         const result= await createTodo({ variables: { text: inputRef.current.value } });
+        let task="";
+        if(inputRef.current.value){
+          task=inputRef.current.value
+         const result= await createTodo({ variables: { text:task  } });
          inputRef.current.value = '';
          setTodos([...todos,result.data.createTodo])
           // console.log(" Result createTodo : "  ,result ,data.todos.length);
@@ -116,9 +120,17 @@ setTodos(newList)
 
         //  console.log(" Result after await  createTodo : "  , response);
                // window.location.reload();
-      }}>
+    }
+    else{
+      setMessage("Please  enter some task!")
+    } }
+
+    }>   <div>
         <input className="form-control" type="text" placeholder="Enter todo" ref={inputRef}></input>
-        <button className="btn btn-primary px-5 my-2" type="submit">Submit</button>
+        <span style={{color:"red", fontSize:".9rem"}}>{message}</span>
+        </div>
+        <div>
+        <button className="btn btn-primary px-5 my-2" type="submit">Submit</button></div>
       </form>
       <ul>
 
