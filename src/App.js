@@ -109,16 +109,14 @@ setTodos(newList)
       <form onSubmit={ async(e) => {
         e.preventDefault();
          const result= await createTodo({ variables: { text: input.value } });
-
+         input.value = '';
          setTodos([...todos,result.data.createTodo])
           // console.log(" Result createTodo : "  ,result ,data.todos.length);
           // const response= await result;
 
 
         //  console.log(" Result after await  createTodo : "  , response);
-         input.value = '';
-
-        // window.location.reload();
+               // window.location.reload();
       }}>
         <input className="form-control" type="text" placeholder="Enter todo" ref={node => { input = node; }}></input>
         <button className="btn btn-primary px-5 my-2" type="submit">Submit</button>
