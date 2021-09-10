@@ -129,7 +129,7 @@ setTodos(newList)
             <span className={todo.completed ? "done" : "pending"}>{todo.text}</span>
             <button className=" ml-3 btn btn-s btn-outline-danger float-right" onClick={(e)=>{  e.preventDefault(); remove(todo.id)}}
              >❌</button>
-            <button className={`btn btn-s float-right ${todo.completed ? "btn-success" : "btn-info"}`} onClick={(e)=>edit(todo.id)}>
+            <button className={`btn btn-s float-right ${todo.completed ? "btn-success" : "btn-info"}`} onClick={(e)=> { e.preventDefault(); edit(todo.id) }}>
               {todo.completed ? <span>Completed</span> : <span>Not completed</span>}</button>
           </li>
         )}
