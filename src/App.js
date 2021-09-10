@@ -29,23 +29,13 @@ const CREATE_TODO = gql`
 
 const REMOVE_TODO = gql`
   mutation RemoveTodo($id: String!) {
-    removeTodo(id: $id){
-      id
-      text
-      completed
-
-    }
-  }
+    removeTodo(id: $id)
+       }
 `;
 
 const UPDATE_TODO = gql`
   mutation UpdateTodo($id: String!) {
-    updateTodo(id: $id){
-      id
-      text
-      completed
-
-    }
+    updateTodo(id: $id)
   }
 `;
 
@@ -83,20 +73,29 @@ function App() {
 const remove = async(id)=>{
   setDeleting(true)
      const res=await  deleteTodo({ variables: { id: id} });
-   // window.location.reload();
-   setDeleting(false)
+      setDeleting(false)
+   const newList = todos.filter((item)=>item.id!==id)
    console.log(res,data.removeTodo)
-   setTodos(res.data.removeTodo)
+   setTodos(newList)
 
 
 }
  const edit= async(id)=>{
   setDeleting(true)
   const res=await  updateTodo({ variables: { id: id} });
-// window.location.reload();
 setDeleting(false)
+const newList = todos.map((item) => {
+  if (item.id === id) {
+    const updatedItem = {
+      ...item,
+      completed: !item.completed,
+    };
+    return updatedItem;
+  }
+  return item;
+});
 console.log(res,data.updateTodo)
-setTodos(res.data.updateTodo)
+setTodos(newList)
 
 
  }
@@ -131,7 +130,7 @@ setTodos(res.data.updateTodo)
        todos.map((todo) =>
           <li key={todo.id} style={{ width:"400px" ,padding:"5px"}}>
             <span className={todo.completed ? "done" : "pending"}>{todo.text}</span>
-            <button className=" ml-3 btn btn-s btn-outline-danger float-right" onClick={(e)=>remove(todo.id)}
+            <button className=" ml-3 btn btn-s btn-outline-danger float-right" onClick={(e)=>{  e.preventDefault(); remove(todo.id)}}
              >❌</button>
             <button className={`btn btn-s float-right ${todo.completed ? "btn-success" : "btn-info"}`} onClick={(e)=>edit(todo.id)}>
               {todo.completed ? <span>Completed</span> : <span>Not completed</span>}</button>
